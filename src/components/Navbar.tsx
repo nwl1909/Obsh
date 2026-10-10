@@ -14,7 +14,10 @@ import {
   Lock,
   Download,
   Sun,
-  Moon
+  Moon,
+  Menu,
+  X,
+  Compass
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -43,6 +46,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onToggleTheme,
 }) => {
   const [isMuted, setIsMuted] = useState(sounds.getIsMuted());
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { currentRank } = getUserRank(progress.xp);
 
   const handleMuteToggle = () => {
@@ -56,57 +60,60 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <header className={`sticky top-0 z-40 transition-colors backdrop-blur-md border-b ${
       isDark 
-        ? 'bg-slate-950/85 border-slate-800/80 text-white' 
-        : 'bg-white/90 border-slate-200/90 text-slate-900 shadow-xs'
+        ? 'bg-slate-950/80 border-white/[0.08] text-slate-100' 
+        : 'bg-white/85 border-slate-200/80 text-slate-900 shadow-xs'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4 md:gap-8">
-        {/* Zone 1: Wordmark */}
+        {/* Zone 1: Brand Wordmark */}
         <div 
           onClick={() => {
             sounds.playClick();
             setActiveView('map');
+            setMobileMenuOpen(false);
           }}
-          className="flex items-center gap-3 shrink-0 cursor-pointer group"
+          className="flex items-center gap-3 shrink-0 cursor-pointer group select-none"
         >
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-500 to-indigo-600 flex items-center justify-center shadow-md shadow-amber-500/15 text-white font-black text-sm tracking-tighter group-hover:scale-105 transition-transform">
-            100
+          <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-black text-xs tracking-tight shadow-md shadow-indigo-600/20 group-hover:scale-105 transition-transform">
+            ЕГЭ
           </div>
           <div className="flex flex-col">
-            <div className="flex items-center gap-1.5">
-              <span className="text-base font-extrabold tracking-tight whitespace-nowrap bg-gradient-to-r from-amber-400 via-orange-300 to-indigo-400 bg-clip-text text-transparent">
+            <div className="flex items-center gap-2">
+              <span className="text-base font-extrabold tracking-tight">
                 Обществознание
               </span>
-              <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded uppercase ${
-                isDark ? 'bg-indigo-500/20 text-indigo-300' : 'bg-indigo-50 text-indigo-600'
+              <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md uppercase tracking-wider ${
+                isDark ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/30' : 'bg-indigo-50 text-indigo-700 border border-indigo-200'
               }`}>
                 Квест
               </span>
             </div>
-            <span className={`text-[11px] font-medium hidden sm:inline whitespace-nowrap ${
+            <span className={`text-[11px] font-medium hidden sm:inline ${
               isDark ? 'text-slate-400' : 'text-slate-500'
             }`}>
-              47 уровней к 100 баллам ЕГЭ
+              47 уровней к 100 баллам
             </span>
           </div>
         </div>
 
-        {/* Zone 2: Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-6 text-sm font-semibold">
+        {/* Zone 2: Navigation Links (Desktop) */}
+        <nav className="hidden lg:flex items-center gap-1 text-sm font-semibold p-1 rounded-xl">
           <button
             onClick={() => {
               sounds.playClick();
               setActiveView('map');
             }}
-            className={`transition-colors whitespace-nowrap py-1 relative ${
-              activeView === 'map' 
-                ? 'text-amber-500' 
-                : isDark ? 'text-slate-300 hover:text-white' : 'text-slate-600 hover:text-slate-900'
+            className={`px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+              activeView === 'map'
+                ? isDark 
+                  ? 'bg-white/10 text-white font-bold' 
+                  : 'bg-slate-100 text-slate-950 font-bold'
+                : isDark 
+                  ? 'text-slate-400 hover:text-white' 
+                  : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            Карта уровней
-            {activeView === 'map' && (
-              <span className="absolute -bottom-2 left-0 right-0 h-0.5 bg-amber-500 rounded-full" />
-            )}
+            <Compass className="w-4 h-4 text-indigo-500" />
+            <span>Карта уровней</span>
           </button>
 
           <button
@@ -114,17 +121,18 @@ export const Navbar: React.FC<NavbarProps> = ({
               sounds.playClick();
               setActiveView('exam');
             }}
-            className={`transition-colors whitespace-nowrap py-1 flex items-center gap-1.5 relative ${
-              activeView === 'exam' 
-                ? 'text-amber-500' 
-                : isDark ? 'text-slate-300 hover:text-white' : 'text-slate-600 hover:text-slate-900'
+            className={`px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+              activeView === 'exam'
+                ? isDark 
+                  ? 'bg-white/10 text-white font-bold' 
+                  : 'bg-slate-100 text-slate-950 font-bold'
+                : isDark 
+                  ? 'text-slate-400 hover:text-white' 
+                  : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             <Sparkles className="w-4 h-4 text-amber-500" />
-            <span>Супер-Экзамен (100б)</span>
-            {activeView === 'exam' && (
-              <span className="absolute -bottom-2 left-0 right-0 h-0.5 bg-amber-500 rounded-full" />
-            )}
+            <span>Блиц-экзамен</span>
           </button>
 
           <button
@@ -132,12 +140,12 @@ export const Navbar: React.FC<NavbarProps> = ({
               sounds.playClick();
               onOpenGlossary();
             }}
-            className={`transition-colors whitespace-nowrap flex items-center gap-1.5 ${
-              isDark ? 'text-slate-300 hover:text-white' : 'text-slate-600 hover:text-slate-900'
+            className={`px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+              isDark ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <BookMarked className="w-4 h-4 text-indigo-500" />
-            <span>Словарь терминов</span>
+            <BookMarked className="w-4 h-4 text-indigo-400" />
+            <span>Словарь понятий</span>
           </button>
 
           <button
@@ -145,11 +153,11 @@ export const Navbar: React.FC<NavbarProps> = ({
               sounds.playClick();
               onOpenAchievements();
             }}
-            className={`transition-colors whitespace-nowrap flex items-center gap-1.5 ${
-              isDark ? 'text-slate-300 hover:text-white' : 'text-slate-600 hover:text-slate-900'
+            className={`px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+              isDark ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <Trophy className="w-4 h-4 text-amber-500" />
+            <Trophy className="w-4 h-4 text-amber-400" />
             <span>Достижения</span>
           </button>
 
@@ -158,7 +166,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               sounds.playClick();
               onOpenGithubGuide();
             }}
-            className={`transition-colors whitespace-nowrap flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
               isDark ? 'text-emerald-400 hover:text-emerald-300' : 'text-emerald-600 hover:text-emerald-700'
             }`}
           >
@@ -167,14 +175,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
         </nav>
 
-        {/* Zone 3: Player Stats & Controls */}
-        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-          {/* Streak Indicator */}
+        {/* Zone 3: Telemetry & Interactive Actions */}
+        <div className="flex items-center gap-2 shrink-0">
+          {/* Streak Badge */}
           <div 
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-bold tabular-nums border ${
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold tabular-nums border ${
               isDark 
-                ? 'bg-orange-950/40 border-orange-500/30 text-orange-400 shadow-xs' 
-                : 'bg-orange-50 border-orange-200 text-orange-600'
+                ? 'bg-orange-500/10 border-orange-500/25 text-orange-400' 
+                : 'bg-orange-50 border-orange-200 text-orange-700'
             }`}
             title={`Ударный режим: ${progress.streak} дня подряд`}
           >
@@ -184,10 +192,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* XP & Current Rank */}
           <div 
-            className={`hidden sm:flex items-center gap-2 px-3 py-1 rounded-xl text-xs font-semibold border ${
+            className={`hidden sm:flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold border ${
               isDark 
-                ? 'bg-slate-900 border-slate-800 text-slate-200' 
-                : 'bg-slate-100/80 border-slate-200 text-slate-700'
+                ? 'bg-slate-900/90 border-white/[0.08] text-slate-200' 
+                : 'bg-slate-100 border-slate-200 text-slate-700'
             }`}
             title={currentRank.title}
           >
@@ -195,33 +203,33 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="text-amber-500 font-bold tabular-nums">{progress.xp} XP</span>
           </div>
 
-          {/* Freeplay Toggle */}
+          {/* Free-Play Mode Switch */}
           <button
             onClick={() => {
               sounds.playClick();
               onToggleFreePlay();
             }}
-            className={`p-2 rounded-xl border transition-all ${
+            className={`p-2 rounded-lg border transition-all ${
               progress.freePlayMode 
                 ? 'bg-amber-500/15 border-amber-500/40 text-amber-500 shadow-xs' 
                 : isDark 
-                  ? 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200' 
+                  ? 'bg-slate-900/90 border-white/[0.08] text-slate-400 hover:text-slate-200' 
                   : 'bg-slate-100 border-slate-200 text-slate-500 hover:text-slate-900'
             }`}
-            title={progress.freePlayMode ? 'Свободный доступ: все 47 тем открыты' : 'Пошаговый режим: темы открываются по порядку'}
+            title={progress.freePlayMode ? 'Свободный режим: все темы открыты' : 'Пошаговый режим: темы открываются по порядку'}
           >
             {progress.freePlayMode ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
           </button>
 
-          {/* Theme Toggle Button */}
+          {/* Theme Switcher */}
           <button
             onClick={() => {
               sounds.playClick();
               onToggleTheme();
             }}
-            className={`p-2 rounded-xl border transition-colors ${
+            className={`p-2 rounded-lg border transition-colors ${
               isDark 
-                ? 'bg-slate-900 border-slate-800 text-slate-300 hover:text-amber-400' 
+                ? 'bg-slate-900/90 border-white/[0.08] text-slate-300 hover:text-amber-400' 
                 : 'bg-slate-100 border-slate-200 text-slate-600 hover:text-slate-900'
             }`}
             title={isDark ? 'Переключить на светлую тему' : 'Переключить на темную тему'}
@@ -229,12 +237,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
           </button>
 
-          {/* Sound Toggle */}
+          {/* Sound FX Toggle */}
           <button
             onClick={handleMuteToggle}
-            className={`p-2 rounded-xl border transition-colors ${
+            className={`p-2 rounded-lg border transition-colors ${
               isDark 
-                ? 'bg-slate-900 border-slate-800 text-slate-300 hover:text-white' 
+                ? 'bg-slate-900/90 border-white/[0.08] text-slate-300 hover:text-white' 
                 : 'bg-slate-100 border-slate-200 text-slate-600 hover:text-slate-900'
             }`}
             title={isMuted ? 'Включить звук' : 'Выключить звук'}
@@ -242,23 +250,102 @@ export const Navbar: React.FC<NavbarProps> = ({
             {isMuted ? <VolumeX className="w-4 h-4 text-rose-500" /> : <Volume2 className="w-4 h-4 text-emerald-500" />}
           </button>
 
-          {/* Backup Button */}
+          {/* Progress Backup */}
           <button
             onClick={() => {
               sounds.playClick();
               onOpenBackup();
             }}
-            className={`p-2 rounded-xl border transition-colors ${
+            className={`p-2 rounded-lg border transition-colors ${
               isDark 
-                ? 'bg-slate-900 border-slate-800 text-slate-300 hover:text-white' 
+                ? 'bg-slate-900/90 border-white/[0.08] text-slate-300 hover:text-white' 
                 : 'bg-slate-100 border-slate-200 text-slate-600 hover:text-slate-900'
             }`}
-            title="Резервная копия прогресса (скачать/загрузить)"
+            title="Резервная копия прогресса"
           >
             <Download className="w-4 h-4" />
           </button>
+
+          {/* Mobile Menu Hamburger */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className={`lg:hidden p-2 rounded-lg border transition-colors ${
+              isDark 
+                ? 'bg-slate-900 border-white/[0.08] text-slate-300' 
+                : 'bg-slate-100 border-slate-200 text-slate-700'
+            }`}
+          >
+            {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Drawer */}
+      {mobileMenuOpen && (
+        <div className={`lg:hidden border-b px-4 py-4 space-y-2 animate-fadeIn ${
+          isDark ? 'bg-slate-950 border-white/[0.08]' : 'bg-white border-slate-200'
+        }`}>
+          <button
+            onClick={() => {
+              sounds.playClick();
+              setActiveView('map');
+              setMobileMenuOpen(false);
+            }}
+            className="w-full text-left py-2 px-3 rounded-lg text-sm font-semibold flex items-center gap-2"
+          >
+            <Compass className="w-4 h-4 text-indigo-500" />
+            <span>Карта уровней</span>
+          </button>
+
+          <button
+            onClick={() => {
+              sounds.playClick();
+              setActiveView('exam');
+              setMobileMenuOpen(false);
+            }}
+            className="w-full text-left py-2 px-3 rounded-lg text-sm font-semibold flex items-center gap-2"
+          >
+            <Sparkles className="w-4 h-4 text-amber-500" />
+            <span>Блиц-экзамен (100 баллов)</span>
+          </button>
+
+          <button
+            onClick={() => {
+              sounds.playClick();
+              onOpenGlossary();
+              setMobileMenuOpen(false);
+            }}
+            className="w-full text-left py-2 px-3 rounded-lg text-sm font-semibold flex items-center gap-2"
+          >
+            <BookMarked className="w-4 h-4 text-indigo-400" />
+            <span>Словарь ключевых понятий</span>
+          </button>
+
+          <button
+            onClick={() => {
+              sounds.playClick();
+              onOpenAchievements();
+              setMobileMenuOpen(false);
+            }}
+            className="w-full text-left py-2 px-3 rounded-lg text-sm font-semibold flex items-center gap-2"
+          >
+            <Trophy className="w-4 h-4 text-amber-400" />
+            <span>Зал достижений</span>
+          </button>
+
+          <button
+            onClick={() => {
+              sounds.playClick();
+              onOpenGithubGuide();
+              setMobileMenuOpen(false);
+            }}
+            className="w-full text-left py-2 px-3 rounded-lg text-sm font-semibold flex items-center gap-2 text-emerald-500"
+          >
+            <Github className="w-4 h-4" />
+            <span>Инструкция GitHub Pages</span>
+          </button>
+        </div>
+      )}
     </header>
   );
 };

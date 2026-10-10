@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Github, Copy, Check, ShieldCheck } from 'lucide-react';
+import { X, Github, Copy, Check, ShieldCheck, AlertTriangle } from 'lucide-react';
 import { sounds } from '../utils/audio';
 
 interface GithubPagesGuideModalProps {
@@ -49,7 +49,7 @@ npx gh-pages -d dist`;
                 Публикация на GitHub Pages
               </h2>
               <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                Бесплатный запуск сайта в интернет за 2 шага
+                Бесплатный запуск сайта в интернет и решение частых ошибок
               </p>
             </div>
           </div>
@@ -66,6 +66,29 @@ npx gh-pages -d dist`;
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-6 text-sm">
+          {/* Troubleshooting White Screen Callout */}
+          <div className={`p-5 rounded-2xl border space-y-2.5 ${
+            isDark 
+              ? 'bg-amber-950/30 border-amber-500/40 text-amber-200' 
+              : 'bg-amber-50 border-amber-200 text-amber-900'
+          }`}>
+            <div className="flex items-center gap-2 text-amber-500 font-black text-xs uppercase tracking-wider">
+              <AlertTriangle className="w-4 h-4 shrink-0" />
+              <span>Почему был белый экран и как его убрать</span>
+            </div>
+            <p className="text-xs leading-relaxed">
+              Белый экран возникает в 2 случаях:
+            </p>
+            <ul className="list-disc list-inside text-xs space-y-1 pl-1">
+              <li>
+                <strong>В GitHub Actions упала сборка:</strong> мы уже обновили <code className="font-bold underline">.github/workflows/deploy.yml</code> (убрали конфликт кэша и добавили <code className="font-bold">--legacy-peer-deps</code>) и создали <code className="font-bold">package-lock.json</code>.
+              </li>
+              <li>
+                <strong>В Settings выбрано не то:</strong> в настройках репозитория <em>Settings → Pages → Source</em> должно стоять именно <strong>GitHub Actions</strong> (а <u>не</u> «Deploy from a branch», иначе сервер отдаёт сырой React-код без сборки!).
+              </li>
+            </ul>
+          </div>
+
           {/* Key Advantage Box */}
           <div className={`p-5 rounded-2xl border space-y-2 ${
             isDark 
@@ -77,7 +100,7 @@ npx gh-pages -d dist`;
               <span>Проект полностью готов к GitHub Pages</span>
             </div>
             <p className={`text-xs leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-              В файле <code className="text-emerald-500 font-bold">vite.config.ts</code> уже настроен <code className="text-emerald-500 font-bold">base: './'</code>, а в проекте создан рабочий workflow <code className="text-emerald-500 font-bold">.github/workflows/deploy.yml</code>.
+              В файле <code className="text-emerald-500 font-bold">vite.config.ts</code> уже настроен <code className="text-emerald-500 font-bold">base: './'</code> (относительные пути для любого имени репозитория), а в проекте создан рабочий workflow <code className="text-emerald-500 font-bold">.github/workflows/deploy.yml</code>.
             </p>
           </div>
 
@@ -89,8 +112,7 @@ npx gh-pages -d dist`;
             </div>
 
             <ol className={`list-decimal list-inside space-y-2 text-xs pl-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-              <li>Создайте репозиторий на <strong>github.com</strong> (например, <code className="text-indigo-500 font-bold">ege-quest</code>).</li>
-              <li>В терминале в папке с сайтом выполните команды:</li>
+              <li>Отправьте свежие файлы в репозиторий:</li>
             </ol>
 
             <div className={`relative rounded-2xl p-4 font-mono text-xs border ${
@@ -106,10 +128,11 @@ npx gh-pages -d dist`;
               <pre className="whitespace-pre-wrap">{gitCommands}</pre>
             </div>
 
-            <ol start={3} className={`list-decimal list-inside space-y-2 text-xs pl-1 pt-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+            <ol start={2} className={`list-decimal list-inside space-y-2 text-xs pl-1 pt-1 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
               <li>Откройте репозиторий на GitHub → <strong>Settings</strong> → слева выберите <strong>Pages</strong>.</li>
               <li>В строке <em>Source</em> выберите: <strong className="text-amber-500">GitHub Actions</strong>.</li>
-              <li>Через 1-2 минуты сайт откроется по адресу: <br/><strong className="text-emerald-500">https://ВАШ_НИК.github.io/ege-quest/</strong></li>
+              <li>Перейдите во вкладку <strong>Actions</strong> вверху — дождитесь, пока workflow станет зелёным.</li>
+              <li>Сайт заработает по адресу: <br/><strong className="text-emerald-500">https://ВАШ_НИК.github.io/ВАШ_РЕПОЗИТОРИЙ/</strong></li>
             </ol>
           </div>
 
@@ -117,7 +140,7 @@ npx gh-pages -d dist`;
           <div className={`space-y-3 pt-5 border-t ${isDark ? 'border-slate-800' : 'border-slate-100'}`}>
             <div className="flex items-center gap-2 font-black text-sm">
               <span className="w-5 h-5 rounded-full bg-slate-600 text-white flex items-center justify-center text-xs">2</span>
-              <span>Альтернатива: публикация через ветку gh-pages</span>
+              <span>Альтернатива: локальная сборка в папку dist</span>
             </div>
             <div className={`relative rounded-2xl p-3.5 font-mono text-xs border ${
               isDark ? 'bg-slate-950 border-slate-800 text-slate-300' : 'bg-slate-900 border-slate-800 text-slate-200'
