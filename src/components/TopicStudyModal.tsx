@@ -171,100 +171,87 @@ export const TopicStudyModal: React.FC<TopicStudyModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs overflow-y-auto animate-fadeIn">
-      <div className="relative w-full max-w-4xl rounded-2xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden border border-[var(--border-subtle)] bg-[var(--surface-card)] text-[var(--text-primary)] transition-colors">
-        {/* Top Header */}
-        <div className="flex items-center justify-between px-5 sm:px-6 py-3.5 border-b border-[var(--border-subtle)] bg-[var(--surface-card)] shrink-0">
-          <div className="flex items-center gap-3">
-            <span className="w-7 h-7 rounded-lg bg-[var(--accent)] text-white font-bold flex items-center justify-center text-xs shadow-xs">
-              {topic.id}
-            </span>
-            <div>
-              <h2 className="text-base sm:text-lg font-bold tracking-tight text-[var(--text-primary)] line-clamp-1">
-                {topic.title}
-              </h2>
-              <p className="text-xs text-[var(--text-muted)] hidden sm:block">
-                {topic.subtitle}
-              </p>
-            </div>
-          </div>
-
+    <div className="fixed inset-0 z-50 w-screen h-screen bg-[var(--bg-canvas)] text-[var(--text-primary)] flex flex-col overflow-hidden animate-fadeIn">
+      {/* Top Header */}
+      <div className="flex items-center justify-between px-4 sm:px-8 py-3 border-b border-[var(--border-subtle)] bg-[var(--surface-card)] shrink-0">
+        <div className="flex items-center gap-3 min-w-0">
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)] transition-colors cursor-pointer"
-            title="Закрыть (Esc)"
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-[var(--border-subtle)] text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)] transition-colors cursor-pointer shrink-0"
           >
-            <X className="w-5 h-5" />
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">К темам</span>
           </button>
+          <span className="w-6 h-6 rounded-md bg-[var(--accent)] text-white font-bold flex items-center justify-center text-xs shadow-xs shrink-0">
+            {topic.id}
+          </span>
+          <div className="min-w-0">
+            <h2 className="text-sm sm:text-base font-bold tracking-tight text-[var(--text-primary)] truncate">
+              {topic.title}
+            </h2>
+          </div>
         </div>
 
         {/* Tab Selector */}
-        <div className="flex items-center justify-between px-5 sm:px-6 py-2 border-b border-[var(--border-subtle)] bg-[var(--surface-muted)]/40 shrink-0">
-          <div className="flex items-center gap-1 p-0.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-card)]">
-            <button
-              onClick={() => {
-                sounds.playClick();
-                setActiveTab('theory');
-              }}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-md flex items-center gap-1.5 transition-all cursor-pointer ${
-                activeTab === 'theory'
-                  ? 'bg-[var(--accent)] text-white shadow-xs'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-              }`}
-            >
-              <BookOpen className="w-3.5 h-3.5" />
-              <span>1. Теория</span>
-            </button>
+        <div className="flex items-center gap-1 p-0.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-card)] shrink-0 mx-2">
+          <button
+            onClick={() => {
+              sounds.playClick();
+              setActiveTab('theory');
+            }}
+            className={`px-3 py-1.5 text-xs font-semibold rounded-md flex items-center gap-1.5 transition-all cursor-pointer ${
+              activeTab === 'theory'
+                ? 'bg-[var(--accent)] text-white shadow-xs'
+                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+            }`}
+          >
+            <BookOpen className="w-3.5 h-3.5" />
+            <span>Теория</span>
+          </button>
 
-            <button
-              onClick={() => {
-                sounds.playClick();
-                setActiveTab('flashcards');
-              }}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-md flex items-center gap-1.5 transition-all cursor-pointer ${
-                activeTab === 'flashcards'
-                  ? 'bg-[var(--accent)] text-white shadow-xs'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-              }`}
-            >
-              <Layers className="w-3.5 h-3.5" />
-              <span>2. Карточки ({topic.flashcards.length})</span>
-            </button>
+          <button
+            onClick={() => {
+              sounds.playClick();
+              setActiveTab('flashcards');
+            }}
+            className={`px-3 py-1.5 text-xs font-semibold rounded-md flex items-center gap-1.5 transition-all cursor-pointer ${
+              activeTab === 'flashcards'
+                ? 'bg-[var(--accent)] text-white shadow-xs'
+                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+            }`}
+          >
+            <Layers className="w-3.5 h-3.5" />
+            <span>Карточки ({topic.flashcards.length})</span>
+          </button>
 
-            <button
-              onClick={() => {
-                sounds.playClick();
-                setActiveTab('quiz');
-              }}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-md flex items-center gap-1.5 transition-all cursor-pointer ${
-                activeTab === 'quiz'
-                  ? 'bg-amber-500 text-slate-950 font-bold shadow-xs'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-              }`}
-            >
-              <Trophy className="w-3.5 h-3.5" />
-              <span>3. Тест</span>
-            </button>
-          </div>
-
-          {activeTab === 'quiz' && !quizFinished && (
-            <div className="flex items-center gap-1.5">
-              {[1, 2, 3].map((heart) => (
-                <Heart
-                  key={heart}
-                  className={`w-4 h-4 transition-transform duration-200 ${
-                    heart <= lives
-                      ? 'fill-rose-500 text-rose-500 scale-105'
-                      : 'text-[var(--text-muted)] opacity-30'
-                  }`}
-                />
-              ))}
-            </div>
-          )}
+          <button
+            onClick={() => {
+              sounds.playClick();
+              setActiveTab('quiz');
+            }}
+            className={`px-3 py-1.5 text-xs font-semibold rounded-md flex items-center gap-1.5 transition-all cursor-pointer ${
+              activeTab === 'quiz'
+                ? 'bg-amber-500 text-slate-950 font-bold shadow-xs'
+                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+            }`}
+          >
+            <Trophy className="w-3.5 h-3.5" />
+            <span>Тест ({topic.quiz.length})</span>
+          </button>
         </div>
 
-        {/* Modal Body */}
-        <div className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-6">
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)] transition-colors cursor-pointer shrink-0"
+          title="Закрыть (Esc)"
+        >
+          <X className="w-5 h-5" />
+        </button>
+      </div>
+
+      {/* Main Full-Height Body */}
+      <div className="flex-1 overflow-y-auto">
           {/* TAB 1: THEORY */}
           {activeTab === 'theory' && (
             <div className="space-y-6">
@@ -511,58 +498,59 @@ export const TopicStudyModal: React.FC<TopicStudyModalProps> = ({
 
           {/* TAB 3: QUIZ */}
           {activeTab === 'quiz' && (
-            <div className="space-y-6">
+            <div className="max-w-3xl sm:max-w-4xl mx-auto p-4 sm:p-8 space-y-6">
               {!quizFinished ? (
-                <div className="space-y-6 max-w-2xl mx-auto">
-                  <div className={`flex items-center justify-between text-xs font-semibold ${
-                    isDark ? 'text-slate-400' : 'text-slate-500'
-                  }`}>
-                    <span>
+                <div className="space-y-6">
+                  {/* Status Strip */}
+                  <div className="flex items-center justify-between text-xs font-semibold text-[var(--text-secondary)]">
+                    <span className="text-[var(--accent)] font-bold text-sm">
                       Вопрос {quizQuestionIndex + 1} из {topic.quiz.length}
                     </span>
-                    <span className="text-amber-500">
-                      Верных: {correctAnswersCount}
-                    </span>
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1">
+                        {[1, 2, 3].map((heart) => (
+                          <Heart
+                            key={heart}
+                            className={`w-4 h-4 transition-transform duration-200 ${
+                              heart <= lives
+                                ? 'fill-rose-500 text-rose-500 scale-105'
+                                : 'text-[var(--text-muted)] opacity-30'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-amber-500 font-bold">
+                        Верных: {correctAnswersCount}
+                      </span>
+                    </div>
                   </div>
 
-                  <div className={`p-5 rounded-2xl border space-y-2 ${
-                    isDark ? 'bg-slate-950/60 border-white/[0.08]' : 'bg-slate-50 border-slate-200'
-                  }`}>
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-500">
+                  {/* Question Box */}
+                  <div className="p-6 sm:p-8 rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-card)] space-y-3 shadow-xs">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--accent)]">
                       Задание в формате ЕГЭ
                     </span>
-                    <h3 className={`text-base sm:text-lg font-bold leading-relaxed whitespace-pre-line ${
-                      isDark ? 'text-white' : 'text-slate-900'
-                    }`}>
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold leading-relaxed whitespace-pre-line text-[var(--text-primary)]">
                       {currentQuizQuestion.question}
                     </h3>
                   </div>
 
+                  {/* Options List */}
                   <div className="space-y-3">
                     {currentQuizQuestion.options.map((opt) => {
                       const isSelected = selectedOptionId === opt.id;
-                      let optionClasses = isDark 
-                        ? 'bg-slate-900/80 border-white/[0.08] text-slate-200 hover:border-white/[0.18]'
-                        : 'bg-white border-slate-200 text-slate-800 hover:border-slate-400 shadow-2xs';
+                      let optionClasses = 'bg-[var(--surface-card)] border-[var(--border-subtle)] text-[var(--text-primary)] hover:border-[var(--accent)] hover:bg-[var(--surface-muted)]/50';
 
                       if (isAnswerSubmitted) {
                         if (opt.isCorrect) {
-                          optionClasses = isDark
-                            ? 'bg-emerald-950/50 border-emerald-500 text-emerald-200 ring-1 ring-emerald-500'
-                            : 'bg-emerald-50 border-emerald-400 text-emerald-900 ring-1 ring-emerald-400';
+                          optionClasses = 'bg-emerald-500/15 border-emerald-500 text-emerald-400 ring-1 ring-emerald-500';
                         } else if (isSelected && !opt.isCorrect) {
-                          optionClasses = isDark
-                            ? 'bg-rose-950/50 border-rose-500 text-rose-200 ring-1 ring-rose-500'
-                            : 'bg-rose-50 border-rose-400 text-rose-900 ring-1 ring-rose-400';
+                          optionClasses = 'bg-rose-500/15 border-rose-500 text-rose-400 ring-1 ring-rose-500';
                         } else {
-                          optionClasses = isDark 
-                            ? 'bg-slate-950/40 border-white/[0.04] text-slate-600 opacity-40' 
-                            : 'bg-slate-50 border-slate-200 text-slate-400 opacity-40';
+                          optionClasses = 'bg-transparent border-[var(--border-subtle)] text-[var(--text-muted)] opacity-40';
                         }
                       } else if (isSelected) {
-                        optionClasses = isDark
-                          ? 'bg-indigo-950/60 border-indigo-500 text-white ring-1 ring-indigo-500'
-                          : 'bg-indigo-50 border-indigo-400 text-indigo-950 ring-1 ring-indigo-400';
+                        optionClasses = 'bg-[var(--accent-subtle)] border-[var(--accent)] text-[var(--text-primary)] ring-1 ring-[var(--accent)]';
                       }
 
                       return (
@@ -570,12 +558,12 @@ export const TopicStudyModal: React.FC<TopicStudyModalProps> = ({
                           key={opt.id}
                           onClick={() => handleSelectOption(opt.id)}
                           disabled={isAnswerSubmitted}
-                          className={`w-full text-left p-4 rounded-xl border text-sm transition-all flex items-start gap-3 cursor-pointer ${optionClasses}`}
+                          className={`w-full text-left p-4 sm:p-5 rounded-xl border text-sm sm:text-base transition-all flex items-start gap-3.5 cursor-pointer ${optionClasses}`}
                         >
-                          <span className={`w-5 h-5 rounded-full border flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${
+                          <span className={`w-6 h-6 rounded-md border flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${
                             isSelected 
-                              ? 'bg-indigo-600 text-white border-indigo-600' 
-                              : isDark ? 'border-slate-700 text-slate-400' : 'border-slate-300 text-slate-600'
+                              ? 'bg-[var(--accent)] text-white border-[var(--accent)]' 
+                              : 'border-[var(--border-subtle)] text-[var(--text-muted)]'
                           }`}>
                             {opt.id.toUpperCase()}
                           </span>
@@ -585,35 +573,33 @@ export const TopicStudyModal: React.FC<TopicStudyModalProps> = ({
                     })}
                   </div>
 
+                  {/* Explanation Callout */}
                   {isAnswerSubmitted && (
-                    <div className={`p-4 rounded-xl border space-y-1.5 animate-fadeIn ${
-                      isDark 
-                        ? 'bg-slate-800/80 border-white/[0.08]' 
-                        : 'bg-slate-100 border-slate-200 text-slate-800'
-                    }`}>
+                    <div className="p-4 sm:p-5 rounded-xl border border-amber-500/25 bg-amber-500/10 space-y-1.5 animate-fadeIn">
                       <div className="flex items-center gap-1.5 text-xs font-bold text-amber-500">
                         <AlertCircle className="w-4 h-4" />
-                        <span>Пояснение:</span>
+                        <span>Пояснение к заданию:</span>
                       </div>
-                      <p className={`text-xs leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+                      <p className="text-xs sm:text-sm leading-relaxed text-[var(--text-secondary)]">
                         {currentQuizQuestion.explanation}
                       </p>
                     </div>
                   )}
 
-                  <div className="flex justify-end pt-1">
+                  {/* Submit / Next Button */}
+                  <div className="flex justify-end pt-2">
                     {!isAnswerSubmitted ? (
                       <button
                         onClick={handleSubmitAnswer}
                         disabled={!selectedOptionId}
-                        className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-30 text-white font-semibold text-xs sm:text-sm shadow-xs transition-all"
+                        className="px-6 py-3 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] disabled:opacity-30 text-white font-semibold text-sm shadow-xs transition-all cursor-pointer"
                       >
                         Проверить ответ
                       </button>
                     ) : (
                       <button
                         onClick={handleNextQuizQuestion}
-                        className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs sm:text-sm shadow-xs flex items-center gap-2 transition-all"
+                        className="px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-xs flex items-center gap-2 transition-all cursor-pointer"
                       >
                         <span>
                           {quizQuestionIndex < topic.quiz.length - 1 && lives > 0
@@ -626,17 +612,17 @@ export const TopicStudyModal: React.FC<TopicStudyModalProps> = ({
                   </div>
                 </div>
               ) : (
-                <div className="max-w-md mx-auto text-center space-y-6 py-6 animate-fadeIn">
+                <div className="max-w-md mx-auto text-center space-y-6 py-12 animate-fadeIn">
                   <div className="w-16 h-16 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center mx-auto shadow-lg">
                     <Trophy className="w-8 h-8" />
                   </div>
 
                   <div className="space-y-1">
-                    <h3 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                    <h3 className="text-2xl font-bold text-[var(--text-primary)]">
                       Уровень {topic.id} завершён!
                     </h3>
-                    <p className={`text-xs ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-                      Верных ответов: <strong className="text-emerald-500">{correctAnswersCount}</strong> из {topic.quiz.length}
+                    <p className="text-sm text-[var(--text-secondary)]">
+                      Верных ответов: <strong className="text-emerald-500 font-bold">{correctAnswersCount}</strong> из {topic.quiz.length}
                     </p>
                   </div>
 
@@ -649,25 +635,21 @@ export const TopicStudyModal: React.FC<TopicStudyModalProps> = ({
                           className={`w-8 h-8 ${
                             s <= earnedStars
                               ? 'fill-amber-400 text-amber-400'
-                              : isDark ? 'text-slate-800' : 'text-slate-200'
+                              : 'text-[var(--text-muted)] opacity-20'
                           } transition-all`}
                         />
                       );
                     })}
                   </div>
 
-                  <div className={`p-3.5 rounded-xl border text-xs font-semibold ${
-                    isDark ? 'bg-slate-950/80 border-white/[0.08] text-slate-300' : 'bg-slate-50 border-slate-200 text-slate-700'
-                  }`}>
+                  <div className="p-3.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-card)] text-xs font-semibold text-[var(--text-secondary)]">
                     Начислено: <strong className="text-amber-500">+100 XP</strong> и открыта следующая тема!
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-2.5 justify-center pt-1">
+                  <div className="flex flex-col sm:flex-row gap-2.5 justify-center pt-2">
                     <button
                       onClick={restartQuiz}
-                      className={`px-4 py-2 rounded-xl text-xs font-semibold transition-colors ${
-                        isDark ? 'bg-slate-800 hover:bg-slate-700 text-slate-300' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
-                      }`}
+                      className="px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--border-subtle)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)] transition-colors cursor-pointer"
                     >
                       Пройти заново
                     </button>
@@ -678,7 +660,7 @@ export const TopicStudyModal: React.FC<TopicStudyModalProps> = ({
                           sounds.playClick();
                           onNextLevel(topic.id + 1);
                         }}
-                        className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-xs"
+                        className="px-5 py-2 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
                       >
                         <span>Тема {topic.id + 1}</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -687,18 +669,15 @@ export const TopicStudyModal: React.FC<TopicStudyModalProps> = ({
 
                     <button
                       onClick={onClose}
-                      className={`px-4 py-2 rounded-xl text-xs font-semibold transition-colors ${
-                        isDark ? 'bg-slate-800 hover:bg-slate-700 text-slate-300' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
-                      }`}
+                      className="px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--border-subtle)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)] transition-colors cursor-pointer"
                     >
-                      На карту
+                      К темам
                     </button>
                   </div>
                 </div>
               )}
             </div>
           )}
-        </div>
       </div>
     </div>
   );

@@ -113,50 +113,43 @@ export const BossExamModal: React.FC<BossExamModalProps> = ({
   }, [isFinished, questions, selectedAnswers]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto animate-fadeIn">
-      <div className={`relative w-full max-w-3xl rounded-3xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden border transition-colors ${
-        isDark ? 'bg-slate-900 border-slate-700/80 text-white' : 'bg-white border-slate-200 text-slate-900'
-      }`}>
-        {/* Header */}
-        <div className={`flex items-center justify-between px-6 py-4.5 border-b shrink-0 ${
-          isDark ? 'border-slate-800 bg-slate-900/95' : 'border-slate-100 bg-slate-50/80'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-rose-600 via-pink-600 to-amber-500 text-white flex items-center justify-center shadow-md">
-              <Swords className="w-5 h-5" />
-            </div>
-            <div>
-              <h2 className="text-base sm:text-lg font-black tracking-tight">
-                {isMegaExam ? 'Супер-Экзамен ЕГЭ (Симулятор 100 баллов)' : section?.bossExam.title}
-              </h2>
-              <p className={`text-xs ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                {isMegaExam ? 'Контрольный срез по всем 47 темам курса' : section?.bossExam.description}
-              </p>
-            </div>
+    <div className="fixed inset-0 z-50 w-screen h-screen bg-[var(--bg-canvas)] text-[var(--text-primary)] flex flex-col overflow-hidden animate-fadeIn">
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 sm:px-8 py-3.5 border-b border-[var(--border-subtle)] bg-[var(--surface-card)] shrink-0">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-[var(--accent)] text-white flex items-center justify-center shadow-xs">
+            <Swords className="w-4 h-4" />
           </div>
-
-          <div className="flex items-center gap-3">
-            {!isFinished && (
-              <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold tabular-nums border ${
-                isDark ? 'bg-slate-800 text-amber-400 border-slate-700' : 'bg-slate-100 text-amber-600 border-slate-200'
-              }`}>
-                <Timer className="w-3.5 h-3.5" />
-                <span>{formatTime(timeLeft)}</span>
-              </div>
-            )}
-            <button
-              onClick={onClose}
-              className={`p-2 rounded-xl transition-colors ${
-                isDark ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-slate-400 hover:text-slate-900 hover:bg-slate-100'
-              }`}
-            >
-              <X className="w-5 h-5" />
-            </button>
+          <div>
+            <h2 className="text-sm sm:text-base font-bold tracking-tight text-[var(--text-primary)]">
+              {isMegaExam ? 'Супер-Экзамен ЕГЭ (Симулятор 100 баллов)' : section?.bossExam.title}
+            </h2>
+            <p className="text-xs text-[var(--text-muted)] hidden sm:block">
+              {isMegaExam ? 'Контрольный срез по всем 47 темам курса' : section?.bossExam.description}
+            </p>
           </div>
         </div>
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-6">
+        <div className="flex items-center gap-3">
+          {!isFinished && (
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold tabular-nums border border-amber-500/30 bg-amber-500/10 text-amber-500">
+              <Timer className="w-3.5 h-3.5" />
+              <span>{formatTime(timeLeft)}</span>
+            </div>
+          )}
+          <button
+            onClick={onClose}
+            className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)] transition-colors cursor-pointer"
+            title="Закрыть"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto p-4 sm:p-8">
+        <div className="max-w-4xl mx-auto space-y-6">
           {!isFinished ? (
             <div className="space-y-6">
               {/* Question Navigation Bubbles */}
@@ -182,16 +175,12 @@ export const BossExamModal: React.FC<BossExamModalProps> = ({
               </div>
 
               {/* Question Card */}
-              <div className={`p-6 rounded-3xl border space-y-2.5 ${
-                isDark ? 'bg-slate-950/60 border-slate-800' : 'bg-slate-50 border-slate-200'
-              }`}>
-                <div className="text-[11px] font-black uppercase tracking-wider text-rose-500 flex items-center gap-1">
+              <div className="p-6 sm:p-8 rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-card)] space-y-3 shadow-xs">
+                <div className="text-xs font-bold uppercase tracking-wider text-[var(--accent)] flex items-center gap-1.5">
                   <Swords className="w-3.5 h-3.5" />
-                  <span>Битва босса · Вопрос {currentIndex + 1} из {questions.length}</span>
+                  <span>Вопрос {currentIndex + 1} из {questions.length}</span>
                 </div>
-                <h3 className={`text-base sm:text-lg font-black leading-relaxed ${
-                  isDark ? 'text-white' : 'text-slate-900'
-                }`}>
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold leading-relaxed text-[var(--text-primary)]">
                   {currentQ.question}
                 </h3>
               </div>
@@ -204,20 +193,16 @@ export const BossExamModal: React.FC<BossExamModalProps> = ({
                     <button
                       key={opt.id}
                       onClick={() => handleSelect(opt.id)}
-                      className={`w-full text-left p-4.5 rounded-2xl border text-sm transition-all flex items-start gap-3.5 cursor-pointer ${
+                      className={`w-full text-left p-4 sm:p-5 rounded-xl border text-sm sm:text-base transition-all flex items-start gap-3.5 cursor-pointer ${
                         isSelected
-                          ? isDark 
-                            ? 'bg-indigo-950/70 border-indigo-500 text-white ring-2 ring-indigo-500/30'
-                            : 'bg-indigo-50 border-indigo-400 text-indigo-950 ring-2 ring-indigo-200'
-                          : isDark
-                            ? 'bg-slate-900/80 border-slate-800 text-slate-200 hover:border-slate-700'
-                            : 'bg-white border-slate-200 text-slate-800 hover:border-slate-300 shadow-2xs'
+                          ? 'bg-[var(--accent-subtle)] border-[var(--accent)] text-[var(--text-primary)] ring-1 ring-[var(--accent)]'
+                          : 'bg-[var(--surface-card)] border-[var(--border-subtle)] text-[var(--text-primary)] hover:border-[var(--accent)] hover:bg-[var(--surface-muted)]/50'
                       }`}
                     >
-                      <span className={`w-6 h-6 rounded-full border flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${
+                      <span className={`w-6 h-6 rounded-md border flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${
                         isSelected 
-                          ? 'bg-indigo-600 text-white border-indigo-600' 
-                          : isDark ? 'border-slate-700 text-slate-400' : 'border-slate-300 text-slate-600'
+                          ? 'bg-[var(--accent)] text-white border-[var(--accent)]' 
+                          : 'border-[var(--border-subtle)] text-[var(--text-muted)]'
                       }`}>
                         {opt.id.toUpperCase()}
                       </span>
