@@ -1,0 +1,6 @@
+{
+  "name": "Обществознание ЕГЭ: Интерактивный Квест",
+  "description": "Игровое изучение всех 47 тем курса ЕГЭ по обществознанию по уровням с сохранением прогресса, карточками, тестами и словарем.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

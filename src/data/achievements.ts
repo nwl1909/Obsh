@@ -1,0 +1,88 @@
+import { Achievement } from '../types';
+
+export const ACHIEVEMENTS: Achievement[] = [
+  {
+    id: 'first_step',
+    title: 'Первый шаг в ЕГЭ',
+    description: 'Пройди свой самый первый уровень и сдай проверочный тест.',
+    icon: '🎯',
+    category: 'progress',
+  },
+  {
+    id: 'streak_3',
+    title: 'Железная воля',
+    description: 'Удерживай ударный режим занятий не менее 3 дней подряд.',
+    icon: '🔥',
+    category: 'streak',
+  },
+  {
+    id: 'cards_master',
+    title: 'Хранитель карточек',
+    description: 'Освой 20 терминов в режиме интерактивных карточек памяти.',
+    icon: '🃏',
+    category: 'mastery',
+  },
+  {
+    id: 'star_hunter_5',
+    title: 'Звёздный отличник',
+    description: 'Заработай максимальные 3 звезды в 5 любых темах.',
+    icon: '⭐',
+    category: 'mastery',
+  },
+  {
+    id: 'section_1_complete',
+    title: 'Теоретик общества',
+    description: 'Победи босса и заверши весь Раздел I (Человек и Общество).',
+    icon: '🌍',
+    category: 'progress',
+  },
+  {
+    id: 'section_2_complete',
+    title: 'Мастер познания',
+    description: 'Пройди все темы и босса Раздела II (Сознание и деятельность).',
+    icon: '🧠',
+    category: 'progress',
+  },
+  {
+    id: 'section_3_complete',
+    title: 'Духовный просветитель',
+    description: 'Заверши все темы Раздела III (Духовная сфера и культура).',
+    icon: '✨',
+    category: 'progress',
+  },
+  {
+    id: 'section_4_complete',
+    title: 'Социолог будущего',
+    description: 'Освой Раздел IV (Социальная структура и отношения).',
+    icon: '👥',
+    category: 'progress',
+  },
+  {
+    id: 'section_5_complete',
+    title: 'Верховный правитель',
+    description: 'Победи в Разделе V (Политика и государство).',
+    icon: '🏛️',
+    category: 'progress',
+  },
+  {
+    id: 'section_6_complete',
+    title: 'Знаток законов',
+    description: 'Успешно освой Раздел VI (Право и юридическая культура).',
+    icon: '⚖️',
+    category: 'progress',
+  },
+  {
+    id: 'section_7_complete',
+    title: 'Финансовый олигарх',
+    description: 'Заверши Раздел VII (Экономика и бизнес).',
+    icon: '💰',
+    category: 'progress',
+  },
+  {
+    id: 'ege_legend_100',
+    title: 'Легенда 100 баллов',
+    description: 'Пройди все 47 уровней курса ЕГЭ по обществознанию!',
+    icon: '👑',
+    category: 'exam',
+  },
+];
