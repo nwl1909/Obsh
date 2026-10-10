@@ -1,14 +1,15 @@
 import React, { useRef, useState } from 'react';
-import { UserProgress } from '../types';
+import { UserProgress, ThemeId } from '../types';
 import { exportProgressJSON, importProgressJSON, INITIAL_PROGRESS, saveProgress } from '../utils/storage';
 import { sounds } from '../utils/audio';
+import { isDarkTheme } from '../utils/themes';
 import { X, Download, Upload, Trash2, CheckCircle2, AlertTriangle } from 'lucide-react';
 
 interface ProgressBackupModalProps {
   progress: UserProgress;
   onClose: () => void;
   onProgressUpdated: (newProgress: UserProgress) => void;
-  theme?: 'dark' | 'light';
+  theme?: ThemeId;
 }
 
 export const ProgressBackupModal: React.FC<ProgressBackupModalProps> = ({
@@ -17,7 +18,7 @@ export const ProgressBackupModal: React.FC<ProgressBackupModalProps> = ({
   onProgressUpdated,
   theme = 'dark',
 }) => {
-  const isDark = theme === 'dark';
+  const isDark = isDarkTheme(theme);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);

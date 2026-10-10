@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { QuizQuestion, UserProgress } from '../types';
+import { QuizQuestion, UserProgress, ThemeId } from '../types';
 import { SECTIONS } from '../data/sections';
 import { sounds } from '../utils/audio';
 import { triggerConfetti } from '../utils/confetti';
+import { isDarkTheme } from '../utils/themes';
 import { 
   X, 
   Swords, 
@@ -16,7 +17,7 @@ interface BossExamModalProps {
   progress: UserProgress;
   onClose: () => void;
   onDefeatBoss: (sectionId: number, xpReward: number) => void;
-  theme?: 'dark' | 'light';
+  theme?: ThemeId;
 }
 
 export const BossExamModal: React.FC<BossExamModalProps> = ({
@@ -26,7 +27,7 @@ export const BossExamModal: React.FC<BossExamModalProps> = ({
   onDefeatBoss,
   theme = 'dark',
 }) => {
-  const isDark = theme === 'dark';
+  const isDark = isDarkTheme(theme);
   const isMegaExam = sectionId === undefined;
   const section = sectionId ? SECTIONS.find((s) => s.id === sectionId) : null;
 

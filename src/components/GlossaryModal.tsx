@@ -2,6 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { GLOSSARY_ITEMS } from '../data/glossary';
 import { SECTIONS } from '../data/sections';
 import { sounds } from '../utils/audio';
+import { isDarkTheme } from '../utils/themes';
+import { ThemeId } from '../types';
 import { 
   X, 
   Search, 
@@ -13,7 +15,7 @@ import {
 interface GlossaryModalProps {
   onClose: () => void;
   onOpenTopic?: (topicId: number) => void;
-  theme?: 'dark' | 'light';
+  theme?: ThemeId;
 }
 
 export const GlossaryModal: React.FC<GlossaryModalProps> = ({ 
@@ -21,7 +23,7 @@ export const GlossaryModal: React.FC<GlossaryModalProps> = ({
   onOpenTopic,
   theme = 'dark'
 }) => {
-  const isDark = theme === 'dark';
+  const isDark = isDarkTheme(theme);
   const [search, setSearch] = useState('');
   const [selectedSection, setSelectedSection] = useState<number | 'all'>('all');
   const [copiedId, setCopiedId] = useState<string | null>(null);

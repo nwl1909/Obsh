@@ -1,12 +1,13 @@
 import React from 'react';
 import { ACHIEVEMENTS } from '../data/achievements';
-import { UserProgress } from '../types';
+import { UserProgress, ThemeId } from '../types';
+import { isDarkTheme } from '../utils/themes';
 import { X, Trophy, CheckCircle2, Lock } from 'lucide-react';
 
 interface AchievementsModalProps {
   progress: UserProgress;
   onClose: () => void;
-  theme?: 'dark' | 'light';
+  theme?: ThemeId;
 }
 
 export const AchievementsModal: React.FC<AchievementsModalProps> = ({
@@ -14,7 +15,7 @@ export const AchievementsModal: React.FC<AchievementsModalProps> = ({
   onClose,
   theme = 'dark',
 }) => {
-  const isDark = theme === 'dark';
+  const isDark = isDarkTheme(theme);
   const completedTopicsCount = Object.keys(progress.completedLevels).length;
   const threeStarTopicsCount = Object.values(progress.completedLevels).filter((c) => c.stars === 3).length;
 

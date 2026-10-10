@@ -1,7 +1,24 @@
 @import "tailwindcss";
 
 @layer base {
-  :root {
+  /* 1. Default: Dark Obsidian / Graphite */
+  :root, .theme-dark {
+    --bg-canvas: #090d16;
+    --surface-card: #0f172a;
+    --surface-muted: #172033;
+    --surface-elevated: #1e293b;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.16);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent: #6366f1;
+    --accent-hover: #4f46e5;
+    --accent-subtle: rgba(99, 102, 241, 0.12);
+  }
+
+  /* 2. Theme: Light Paper */
+  .theme-light {
     --bg-canvas: #f8fafc;
     --surface-card: #ffffff;
     --surface-muted: #f1f5f9;
@@ -11,24 +28,121 @@
     --text-primary: #0f172a;
     --text-secondary: #475569;
     --text-muted: #94a3b8;
-    --accent-primary: #4f46e5;
+    --accent: #4f46e5;
     --accent-hover: #4338ca;
     --accent-subtle: #eef2ff;
   }
 
-  .dark {
-    --bg-canvas: #090d16;
-    --surface-card: #0f172a;
-    --surface-muted: #1e293b;
-    --surface-elevated: #151f32;
-    --border-subtle: rgba(255, 255, 255, 0.08);
-    --border-strong: rgba(255, 255, 255, 0.16);
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
-    --accent-primary: #6366f1;
-    --accent-hover: #4f46e5;
-    --accent-subtle: rgba(99, 102, 241, 0.12);
+  /* 3. Theme: Warm Sepia / Book */
+  .theme-sepia {
+    --bg-canvas: #fbf7ee;
+    --surface-card: #ffffff;
+    --surface-muted: #f4ecdc;
+    --surface-elevated: #ffffff;
+    --border-subtle: #e8dcbe;
+    --border-strong: #d8c6a0;
+    --text-primary: #2d241e;
+    --text-secondary: #635345;
+    --text-muted: #938070;
+    --accent: #b45309;
+    --accent-hover: #92400e;
+    --accent-subtle: #fef3c7;
+  }
+
+  /* 4. Theme: Forest Emerald / Deep Focus */
+  .theme-emerald {
+    --bg-canvas: #06130e;
+    --surface-card: #0b1e17;
+    --surface-muted: #122b22;
+    --surface-elevated: #18372c;
+    --border-subtle: rgba(16, 185, 129, 0.14);
+    --border-strong: rgba(16, 185, 129, 0.28);
+    --text-primary: #ecfdf5;
+    --text-secondary: #a7f3d0;
+    --text-muted: #6ee7b7;
+    --accent: #10b981;
+    --accent-hover: #059669;
+    --accent-subtle: rgba(16, 185, 129, 0.14);
+  }
+
+  /* 5. Theme: Nord Arctic Blue */
+  .theme-nord {
+    --bg-canvas: #0f172a;
+    --surface-card: #1e293b;
+    --surface-muted: #334155;
+    --surface-elevated: #283548;
+    --border-subtle: rgba(56, 189, 248, 0.12);
+    --border-strong: rgba(56, 189, 248, 0.24);
+    --text-primary: #f0f9ff;
+    --text-secondary: #bae6fd;
+    --text-muted: #7dd3fc;
+    --accent: #0284c7;
+    --accent-hover: #0369a1;
+    --accent-subtle: rgba(2, 132, 199, 0.14);
+  }
+
+  /* 6. Theme: Amethyst Violet */
+  .theme-amethyst {
+    --bg-canvas: #0e0c1a;
+    --surface-card: #151229;
+    --surface-muted: #1e1a38;
+    --surface-elevated: #272248;
+    --border-subtle: rgba(139, 92, 246, 0.14);
+    --border-strong: rgba(139, 92, 246, 0.28);
+    --text-primary: #f5f3ff;
+    --text-secondary: #ddd6fe;
+    --text-muted: #a78bfa;
+    --accent: #8b5cf6;
+    --accent-hover: #7c3aed;
+    --accent-subtle: rgba(139, 92, 246, 0.14);
+  }
+
+  /* 7. Theme: Dusk Rose */
+  .theme-rose {
+    --bg-canvas: #140e13;
+    --surface-card: #1c131b;
+    --surface-muted: #261924;
+    --surface-elevated: #322130;
+    --border-subtle: rgba(244, 63, 94, 0.14);
+    --border-strong: rgba(244, 63, 94, 0.28);
+    --text-primary: #fff1f2;
+    --text-secondary: #fecdd3;
+    --text-muted: #fb7185;
+    --accent: #f43f5e;
+    --accent-hover: #e11d48;
+    --accent-subtle: rgba(244, 63, 94, 0.14);
+  }
+
+  /* 8. Theme: Amber Honey */
+  .theme-amber {
+    --bg-canvas: #120f0a;
+    --surface-card: #1a150e;
+    --surface-muted: #241d13;
+    --surface-elevated: #302619;
+    --border-subtle: rgba(245, 158, 11, 0.14);
+    --border-strong: rgba(245, 158, 11, 0.28);
+    --text-primary: #fffbeb;
+    --text-secondary: #fde68a;
+    --text-muted: #f59e0b;
+    --accent: #f59e0b;
+    --accent-hover: #d97706;
+    --accent-subtle: rgba(245, 158, 11, 0.14);
+  }
+
+  /* 9. Theme: Monochrome OLED */
+  .theme-monochrome {
+    --bg-canvas: #050505;
+    --surface-card: #111111;
+    --surface-muted: #1c1c1c;
+    --surface-elevated: #282828;
+    --border-subtle: rgba(255, 255, 255, 0.12);
+    --border-strong: rgba(255, 255, 255, 0.25);
+    --text-primary: #ffffff;
+    --text-secondary: #a3a3a3;
+    --text-muted: #737373;
+    --accent: #f5f5f5;
+    --accent-hover: #e5e5e5;
+    --accent-subtle: rgba(255, 255, 255, 0.12);
   }
 
   body {
@@ -37,6 +151,7 @@
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 }
 
@@ -69,7 +184,7 @@
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(4px);
   }
   to {
     opacity: 1;
@@ -77,29 +192,14 @@
   }
 }
 
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
 .animate-fadeIn {
-  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.animate-scaleIn {
-  animation: scaleIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-/* Subtle modern scrollbar */
+/* Subtle modern scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { TopicData, UserProgress } from '../types';
+import { TopicData, UserProgress, ThemeId } from '../types';
 import { sounds } from '../utils/audio';
 import { triggerConfetti } from '../utils/confetti';
+import { isDarkTheme } from '../utils/themes';
 import { 
   X, 
   BookOpen, 
@@ -27,7 +28,7 @@ interface TopicStudyModalProps {
   onCompleteLevel: (topicId: number, stars: number, score: number) => void;
   onMasterFlashcard: (cardId: string) => void;
   onNextLevel: (nextTopicId: number) => void;
-  theme: 'dark' | 'light';
+  theme: ThemeId;
 }
 
 export const TopicStudyModal: React.FC<TopicStudyModalProps> = ({
@@ -39,7 +40,7 @@ export const TopicStudyModal: React.FC<TopicStudyModalProps> = ({
   onNextLevel,
   theme,
 }) => {
-  const isDark = theme === 'dark';
+  const isDark = isDarkTheme(theme);
   const [activeTab, setActiveTab] = useState<'theory' | 'flashcards' | 'quiz'>('theory');
 
   // Flashcards State
@@ -170,25 +171,19 @@ export const TopicStudyModal: React.FC<TopicStudyModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto animate-fadeIn">
-      <div className={`relative w-full max-w-4xl rounded-3xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden border transition-colors ${
-        isDark 
-          ? 'bg-slate-900 border-white/[0.08] text-white' 
-          : 'bg-white border-slate-200 text-slate-900'
-      }`}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs overflow-y-auto animate-fadeIn">
+      <div className="relative w-full max-w-4xl rounded-2xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden border border-[var(--border-subtle)] bg-[var(--surface-card)] text-[var(--text-primary)] transition-colors">
         {/* Top Header */}
-        <div className={`flex items-center justify-between px-6 py-4 border-b shrink-0 ${
-          isDark ? 'border-white/[0.08] bg-slate-900/90' : 'border-slate-100 bg-slate-50/80'
-        }`}>
+        <div className="flex items-center justify-between px-5 sm:px-6 py-3.5 border-b border-[var(--border-subtle)] bg-[var(--surface-card)] shrink-0">
           <div className="flex items-center gap-3">
-            <span className="w-8 h-8 rounded-lg bg-indigo-600 text-white font-bold flex items-center justify-center text-xs">
+            <span className="w-7 h-7 rounded-lg bg-[var(--accent)] text-white font-bold flex items-center justify-center text-xs shadow-xs">
               {topic.id}
             </span>
             <div>
-              <h2 className="text-base sm:text-lg font-bold tracking-tight line-clamp-1">
+              <h2 className="text-base sm:text-lg font-bold tracking-tight text-[var(--text-primary)] line-clamp-1">
                 {topic.title}
               </h2>
-              <p className={`text-xs hidden sm:block ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+              <p className="text-xs text-[var(--text-muted)] hidden sm:block">
                 {topic.subtitle}
               </p>
             </div>
@@ -196,9 +191,7 @@ export const TopicStudyModal: React.FC<TopicStudyModalProps> = ({
 
           <button
             onClick={onClose}
-            className={`p-1.5 rounded-lg transition-colors ${
-              isDark ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-slate-400 hover:text-slate-900 hover:bg-slate-100'
-            }`}
+            className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-muted)] transition-colors cursor-pointer"
             title="Закрыть (Esc)"
           >
             <X className="w-5 h-5" />
@@ -206,21 +199,17 @@ export const TopicStudyModal: React.FC<TopicStudyModalProps> = ({
         </div>
 
         {/* Tab Selector */}
-        <div className={`flex items-center justify-between px-6 py-2.5 border-b shrink-0 ${
-          isDark ? 'bg-slate-950/40 border-white/[0.06]' : 'bg-slate-100/60 border-slate-200/80'
-        }`}>
-          <div className={`flex items-center gap-1 p-1 rounded-xl border ${
-            isDark ? 'bg-slate-900 border-white/[0.06]' : 'bg-white border-slate-200'
-          }`}>
+        <div className="flex items-center justify-between px-5 sm:px-6 py-2 border-b border-[var(--border-subtle)] bg-[var(--surface-muted)]/40 shrink-0">
+          <div className="flex items-center gap-1 p-0.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-card)]">
             <button
               onClick={() => {
                 sounds.playClick();
                 setActiveTab('theory');
               }}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-all ${
+              className={`px-3 py-1.5 text-xs font-semibold rounded-md flex items-center gap-1.5 transition-all cursor-pointer ${
                 activeTab === 'theory'
-                  ? 'bg-indigo-600 text-white font-bold shadow-xs'
-                  : isDark ? 'text-slate-400 hover:text-slate-200' : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-[var(--accent)] text-white shadow-xs'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
               <BookOpen className="w-3.5 h-3.5" />
@@ -232,10 +221,10 @@ export const TopicStudyModal: React.FC<TopicStudyModalProps> = ({
                 sounds.playClick();
                 setActiveTab('flashcards');
               }}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-all ${
+              className={`px-3 py-1.5 text-xs font-semibold rounded-md flex items-center gap-1.5 transition-all cursor-pointer ${
                 activeTab === 'flashcards'
-                  ? 'bg-indigo-600 text-white font-bold shadow-xs'
-                  : isDark ? 'text-slate-400 hover:text-slate-200' : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-[var(--accent)] text-white shadow-xs'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
               <Layers className="w-3.5 h-3.5" />
@@ -247,10 +236,10 @@ export const TopicStudyModal: React.FC<TopicStudyModalProps> = ({
                 sounds.playClick();
                 setActiveTab('quiz');
               }}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-all ${
+              className={`px-3 py-1.5 text-xs font-semibold rounded-md flex items-center gap-1.5 transition-all cursor-pointer ${
                 activeTab === 'quiz'
                   ? 'bg-amber-500 text-slate-950 font-bold shadow-xs'
-                  : isDark ? 'text-slate-400 hover:text-slate-200' : 'text-slate-600 hover:text-slate-900'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
             >
               <Trophy className="w-3.5 h-3.5" />
@@ -266,7 +255,7 @@ export const TopicStudyModal: React.FC<TopicStudyModalProps> = ({
                   className={`w-4 h-4 transition-transform duration-200 ${
                     heart <= lives
                       ? 'fill-rose-500 text-rose-500 scale-105'
-                      : isDark ? 'text-slate-800 fill-slate-800/80' : 'text-slate-200 fill-slate-200'
+                      : 'text-[var(--text-muted)] opacity-30'
                   }`}
                 />
               ))}

@@ -1,35 +1,52 @@
 import React, { useState, useEffect } from 'react';
-import { UserProgress, TopicData } from './types';
+import { UserProgress, TopicData, ThemeId } from './types';
 import { loadProgress, saveProgress } from './utils/storage';
 import { getTopicById } from './data/topics';
+import { isDarkTheme } from './utils/themes';
 import { Navbar } from './components/Navbar';
 import { MapLevelView } from './components/MapLevelView';
 import { TopicStudyModal } from './components/TopicStudyModal';
 import { BossExamModal } from './components/BossExamModal';
 import { GlossaryModal } from './components/GlossaryModal';
 import { AchievementsModal } from './components/AchievementsModal';
-import { GithubPagesGuideModal } from './components/GithubPagesGuideModal';
 import { ProgressBackupModal } from './components/ProgressBackupModal';
 
 export default function App() {
   const [progress, setProgress] = useState<UserProgress>(loadProgress);
 
-  // Theme state ('dark' | 'light')
-  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+  // Expanded Theme state
+  const [theme, setTheme] = useState<ThemeId>(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('ege_theme');
-      if (saved === 'light' || saved === 'dark') return saved;
+      const saved = localStorage.getItem('ege_theme_v2') || localStorage.getItem('ege_theme');
+      if (
+        saved &&
+        ['dark', 'light', 'sepia', 'emerald', 'nord', 'amethyst', 'rose', 'amber', 'monochrome'].includes(saved)
+      ) {
+        return saved as ThemeId;
+      }
     }
     return 'dark';
   });
 
-  const handleToggleTheme = () => {
-    setTheme((prev) => {
-      const next = prev === 'dark' ? 'light' : 'dark';
-      localStorage.setItem('ege_theme', next);
-      return next;
-    });
+  const handleChangeTheme = (nextTheme: ThemeId) => {
+    setTheme(nextTheme);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('ege_theme_v2', nextTheme);
+    }
   };
+
+  // Sync theme class on document.documentElement
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      const classList = document.documentElement.classList;
+      classList.forEach((cls) => {
+        if (cls.startsWith('theme-')) {
+          classList.remove(cls);
+        }
+      });
+      classList.add(`theme-${theme}`);
+    }
+  }, [theme]);
 
   // Active Main View ('map' | 'exam')
   const [activeView, setActiveView] = useState<'map' | 'exam'>('map');
@@ -39,7 +56,6 @@ export default function App() {
   const [bossSectionId, setBossSectionId] = useState<number | null>(null);
   const [showGlossary, setShowGlossary] = useState(false);
   const [showAchievements, setShowAchievements] = useState(false);
-  const [showGithubGuide, setShowGithubGuide] = useState(false);
   const [showBackup, setShowBackup] = useState(false);
 
   // Save progress updates to LocalStorage
@@ -150,24 +166,19 @@ export default function App() {
     }
   };
 
-  const isDark = theme === 'dark';
-
   return (
-    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-200 selection:bg-amber-500 selection:text-slate-950 ${
-      isDark ? 'bg-slate-950 text-slate-100' : 'bg-[#f8fafc] text-slate-900'
-    }`}>
-      {/* Navigation */}
+    <div className={`theme-${theme} min-h-screen flex flex-col font-sans transition-colors duration-200 bg-[var(--bg-canvas)] text-[var(--text-primary)] selection:bg-[var(--accent)] selection:text-white`}>
+      {/* Clean Minimal Navigation */}
       <Navbar
         progress={progress}
         onOpenGlossary={() => setShowGlossary(true)}
         onOpenAchievements={() => setShowAchievements(true)}
-        onOpenGithubGuide={() => setShowGithubGuide(true)}
         onOpenBackup={() => setShowBackup(true)}
         onToggleFreePlay={handleToggleFreePlay}
         activeView={activeView}
         setActiveView={setActiveView}
         theme={theme}
-        onToggleTheme={handleToggleTheme}
+        onChangeTheme={handleChangeTheme}
       />
 
       {/* Main Content Area */}
@@ -180,9 +191,9 @@ export default function App() {
             theme={theme}
           />
         ) : (
-          <div className="max-w-4xl mx-auto px-4 py-8">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
             <BossExamModal
-              sectionId={undefined} // Mega Exam Mode
+              sectionId={undefined} // 100-point Mega Blitz Exam Mode
               progress={progress}
               onClose={() => setActiveView('map')}
               onDefeatBoss={(_, xp) => {
@@ -197,30 +208,30 @@ export default function App() {
         )}
       </main>
 
-      {/* Footer */}
-      <footer className={`border-t py-6 text-center text-xs transition-colors ${
-        isDark ? 'border-slate-900 bg-slate-950 text-slate-500' : 'border-slate-200 bg-white text-slate-500'
-      }`}>
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span>
-            Обществознание ЕГЭ · Все 47 тем курса для сдачи на 100 баллов
-          </span>
-          <div className="flex items-center gap-4 font-semibold">
-            <button
-              onClick={() => setShowGithubGuide(true)}
-              className={isDark ? 'hover:text-slate-300' : 'hover:text-slate-900'}
-            >
-              Деплой на GitHub Pages
-            </button>
+      {/* Minimal, Calm Footer */}
+      <footer className="border-t border-[var(--border-subtle)] bg-[var(--surface-card)]/40 py-6 text-xs transition-colors">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-[var(--text-secondary)]">
+          <div className="flex items-center gap-2">
+            <span className="font-semibold text-[var(--text-primary)]">Обществознание ЕГЭ</span>
+            <span className="opacity-40">·</span>
+            <span>47 тем курса по кодификатору ФИПИ</span>
+          </div>
+          <div className="flex items-center gap-5 font-medium">
             <button
               onClick={() => setShowGlossary(true)}
-              className={isDark ? 'hover:text-slate-300' : 'hover:text-slate-900'}
+              className="hover:text-[var(--text-primary)] transition-colors cursor-pointer"
             >
               Словарь понятий
             </button>
             <button
+              onClick={() => setShowAchievements(true)}
+              className="hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+            >
+              Достижения
+            </button>
+            <button
               onClick={() => setShowBackup(true)}
-              className={isDark ? 'hover:text-slate-300' : 'hover:text-slate-900'}
+              className="hover:text-[var(--text-primary)] transition-colors cursor-pointer"
             >
               Резервная копия
             </button>
@@ -269,13 +280,6 @@ export default function App() {
         <AchievementsModal
           progress={progress}
           onClose={() => setShowAchievements(false)}
-          theme={theme}
-        />
-      )}
-
-      {showGithubGuide && (
-        <GithubPagesGuideModal
-          onClose={() => setShowGithubGuide(false)}
           theme={theme}
         />
       )}

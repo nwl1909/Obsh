@@ -21,13 +21,13 @@ export interface Flashcard {
 
 export interface TheorySection {
   title: string;
-  content?: string; // Markdown or rich text
+  content?: string;
   table?: {
     headers: string[];
     rows: string[][];
   };
   keyTakeaway?: string;
-  egeTrap?: string; // "Ловушка ЕГЭ"
+  egeTrap?: string;
 }
 
 export interface TopicData {
@@ -65,12 +65,12 @@ export interface UserProgress {
   xp: number;
   streak: number;
   lastActiveDate: string;
-  unlockedLevels: number[]; // topic IDs
+  unlockedLevels: number[];
   completedLevels: Record<number, { stars: number; bestScore: number; completedAt: string }>;
-  masteredFlashcards: string[]; // flashcard IDs
-  unlockedAchievements: string[]; // achievement IDs
-  bossesDefeated: number[]; // section IDs
-  freePlayMode: boolean; // unlock all levels toggle
+  masteredFlashcards: string[];
+  unlockedAchievements: string[];
+  bossesDefeated: number[];
+  freePlayMode: boolean;
 }
 
 export interface Achievement {
@@ -93,4 +93,24 @@ export interface GlossaryItem {
   sectionId: number;
   topicId: number;
   importance: 'high' | 'medium';
+}
+
+export type ThemeId = 
+  | 'dark' 
+  | 'light' 
+  | 'sepia' 
+  | 'emerald' 
+  | 'nord' 
+  | 'amethyst' 
+  | 'rose' 
+  | 'monochrome' 
+  | 'amber';
+
+export interface ThemeOption {
+  id: ThemeId;
+  name: string;
+  description: string;
+  previewBg: string;
+  previewAccent: string;
+  isDark: boolean;
 }
